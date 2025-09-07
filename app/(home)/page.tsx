@@ -1,5 +1,6 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { authClient } from "@/lib/auth-client";
@@ -26,21 +27,18 @@ export default function Home() {
   }
 
   return (
-    <div>
-      Hello World
-      <ThemeToggle />
-
-      { session ? (
-        <div>
-          <p>{session.user.name}</p>
-          <Button onClick={signOut}>
-            Logout
-          </Button>
-        </div>
-      ) : (
-          <Button onClick={signIn}>Login</Button>
-        )
-      }
-    </div>
+    <>
+    <section className="relative py-20">
+      <div className="flex flex-col items-center text-center space-y-8">
+        <Badge variant="outline">
+          The Future of Online Education
+        </Badge>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Elevate your learning experience</h1>
+        <p className="max-w-[700px] text-muted-foreground md:text-xl">
+          Discover a new way to learn with our modern, interactive learning managament system. Access high-quality courses anytime, anywhere.
+          </p>
+      </div>
+    </section>
+    </>
   );
 }
