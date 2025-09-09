@@ -29,6 +29,7 @@ export default function CourseCreationPage() {
             status: "Draft",
             slug: "",
             smallDescription: "",
+            duration: 0
         }
     })
 
@@ -145,7 +146,7 @@ export default function CourseCreationPage() {
                                         <FormItem className="w-full">
                                             <FormLabel>Thumbnail Image</FormLabel>
                                             <FormControl>
-                                                <Uploader />
+                                                <Uploader onChange={field.onChange} value={field.value} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
