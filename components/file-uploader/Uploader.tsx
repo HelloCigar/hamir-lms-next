@@ -148,6 +148,63 @@ export function Uploader() {
 
     }, [fileState.objectUrl])
 
+    async function handleRemoveFile() {
+        if (fileState.isDeleting || !fileState.objectUrl) return;
+        
+        try {
+            setFileState((prev) => ({
+                ...prev,
+                isDeleting: true
+            }));
+
+            const response = await fetch('/api/s3/delete', {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    key: fileState.key
+                })
+            })
+
+            if (!response.ok) {
+                toast.error("Failed to remove file from storage");
+
+                setFileState((prev) => ({
+                    ...prev,
+                    isDeleting: true,
+                    error: true
+                }));
+
+                return;
+            }
+
+            if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+                URL.revokeObjectURL(fileState.objectUrl)
+            }
+
+            setFileState(() => ({
+                file: null,
+                uploading: false,
+                progress: 0,
+                objectUrl: undefined,
+                error: false,
+                id: null,
+                isDeleting: false,
+                fileType: "image"
+            }));
+
+            toast.success("File removed successfully");
+
+        } catch {
+            toast.error("Error removing file. Please try again")
+
+            setFileState((prev) => ({
+                ...prev,
+                error: true,
+                isDeleting: false,
+            }));
+        }
+    }
+
     function rejectedFiles(fileRejection: FileRejection[]) {
         if (fileRejection.length) {
             const tooManyFiles = fileRejection.find((rejection) => rejection.errors[0].code === 'too-many-files');
@@ -179,7 +236,13 @@ export function Uploader() {
         }
 
         if (fileState.objectUrl) {
-            return <RenderUploadedState previewUrl={fileState.objectUrl} />
+            return (
+                <RenderUploadedState 
+                    previewUrl={fileState.objectUrl}
+                    handleRemoveFile={handleRemoveFile}
+                    isDeleting={fileState.isDeleting}
+                />
+            )
         }
 
         return <RenderEmptyState isDragActive={isDragActive} />
@@ -199,7 +262,8 @@ export function Uploader() {
         maxFiles: 1,
         multiple: false,
         maxSize: 5 * 1024 * 1024, //5mb
-        onDropRejected: rejectedFiles
+        onDropRejected: rejectedFiles,
+        disabled: fileState.uploading || !!fileState.objectUrl,
     })
 
 
