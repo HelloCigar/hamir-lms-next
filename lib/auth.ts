@@ -18,7 +18,8 @@ export const auth = betterAuth({
     plugins: [
         emailOTP({
            async sendVerificationOTP({email, otp}) {
-                await sendMail(email, otp);
+                await sendMail(email, otp)
+                    .catch(console.log);
            }, 
         }),
         admin()
