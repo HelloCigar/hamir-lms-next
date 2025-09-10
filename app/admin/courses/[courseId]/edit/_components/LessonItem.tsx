@@ -1,7 +1,8 @@
 import { DraggableSyntheticListeners } from "@dnd-kit/core";
 import { Button } from "@/components/ui/button";
-import { FileText, GripVertical, Trash2 } from "lucide-react";
+import { FileText, GripVertical } from "lucide-react";
 import Link from "next/link";
+import { DeleteLesson } from "./DeleteLesson";
 
 interface LessonItemProps {
     lesson: {
@@ -31,9 +32,7 @@ export function LessonItem({ lesson, chapterId, courseId, listeners }: LessonIte
                     {lesson.title}
                 </Link>
             </div> 
-            <Button size="icon" variant="outline">
-                <Trash2 />
-            </Button>
+            <DeleteLesson lessonId={lesson.id} chapterId={chapterId} courseId={courseId} />
         </div>
     );
 }
