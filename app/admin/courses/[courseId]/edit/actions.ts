@@ -408,7 +408,7 @@ export async function deleteChapter({
             })
         })
 
-        const result = await prisma.$transaction([
+        await prisma.$transaction([
             ...updates,
             prisma.chapter.delete({
                 where: {

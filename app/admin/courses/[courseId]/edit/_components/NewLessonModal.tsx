@@ -50,6 +50,10 @@ export function NewLessonModal({
     }
 
     function handleOpenChange(open: boolean) {
+        if (!open) {
+            form.reset()
+        }
+
         setIsOpen(open)
     }
 
