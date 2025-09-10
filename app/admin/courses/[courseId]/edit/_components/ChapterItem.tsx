@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, GripVertical, Trash2 } from "lucide-react";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 import { LessonList } from "./LessonList";
+import { NewLessonModal } from "./NewLessonModal";
 
 interface ChapterItemProps {
     item: {
@@ -74,9 +75,7 @@ export function ChapterItem({ item, courseId, onToggleChapter }: ChapterItemProp
                                     />
                                 </SortableContext>
                                 <div className="p-2">
-                                    <Button variant="outline" className="w-full">
-                                        Create new lesson
-                                    </Button>
+                                    <NewLessonModal courseId={courseId} chapterId={item.id} />
                                 </div>
                             </div>
                         </CollapsibleContent> 
