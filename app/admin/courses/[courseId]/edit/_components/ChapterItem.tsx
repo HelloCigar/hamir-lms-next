@@ -1,11 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, GripVertical, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, GripVertical } from "lucide-react";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableItem } from "./SortableItem";
 import { LessonList } from "./LessonList";
 import { NewLessonModal } from "./NewLessonModal";
+import { DeleteChapter } from "./DeleteChapter";
 
 interface ChapterItemProps {
     item: {
@@ -58,9 +59,7 @@ export function ChapterItem({ item, courseId, onToggleChapter }: ChapterItemProp
                                 </CollapsibleTrigger>
                                 <p className="cursor-pointer hover:text-primary pl-2">{item.title}</p>
                             </div>
-                            <Button size="icon" variant="outline">
-                                <Trash2 />
-                            </Button>
+                            <DeleteChapter courseId={courseId} chapterId={item.id} />
                         </div>
                         <CollapsibleContent>
                             <div className="p-1">
