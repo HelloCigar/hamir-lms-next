@@ -8,6 +8,7 @@ import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
 import { ChapterItem } from "./ChapterItem";
+import { NewChapterModal } from "./NewChapterModal";
 
 interface iAppProps {
     data: AdminCourseSingularType
@@ -217,6 +218,7 @@ export function CourseStructure({ data }: iAppProps) {
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between border-b border-border">
                     <CardTitle>Chapters</CardTitle>
+                    <NewChapterModal courseId={data.id} />
                 </CardHeader>
                 <CardContent className="space-y-8">
                      <SortableContext 
