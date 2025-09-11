@@ -38,7 +38,7 @@ export function Uploader({ value, onChange }: iAppProps) {
         isDeleting: false,
         fileType: "image",
         key: value,
-        objectUrl: fileUrl
+        objectUrl: value ? fileUrl: undefined
     })
 
     async function uploadFile(file: File) {
