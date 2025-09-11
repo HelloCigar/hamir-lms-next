@@ -26,7 +26,7 @@ export function RichTextEditor({ field }: { field: any }) {
             field.onChange(JSON.stringify(editor.getJSON()))
         },
 
-        content: field.value ? JSON.parse(field.value): '<p>Make your description creative!</p>'
+        content: field.value ? JSON.parse(field.value): '<p>Change this make the description creative!</p>'
     });
 
     return (
