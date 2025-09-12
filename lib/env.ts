@@ -17,7 +17,8 @@ export const env = createEnv({
     AWS_REGION: z.string().min(1),
     GMAIL_APP_PASSWORD: z.string().min(16),
     GMAIL_USER: z.string().min(1),
-    STRIPE_SECRET_KEY: z.string().min(1)
+    STRIPE_SECRET_KEY: z.string().min(1),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1)
   },
 
   client: {

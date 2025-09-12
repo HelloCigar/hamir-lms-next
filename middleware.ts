@@ -12,7 +12,8 @@ const aj = arcjet({
       allow: [
         "CATEGORY:MONITOR",
         "CATEGORY:PREVIEW",
-        "CATEGORY:SEARCH_ENGINE"
+        "CATEGORY:SEARCH_ENGINE",
+        "STRIPE_WEBHOOK"
       ],
     }),
   ],
