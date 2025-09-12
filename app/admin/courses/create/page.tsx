@@ -61,10 +61,9 @@ export default function CourseCreationPage() {
             } else if (result.status === "error") {
                 toast.success(result.message)
             }
-        })
-
-       
+        }) 
     }
+    
     return (
         <>
             <div className="flex items-center gap-4">
