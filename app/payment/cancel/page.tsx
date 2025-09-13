@@ -17,7 +17,7 @@ export default function PaymentCancelled() {
                         <h2 className="text-xl font-semibold">Payment Cancelled</h2>
                         <p className="text-sm mt-2 text-muted-foreground tracking-tight
                          text-balance">
-                            No worries, your won&apos;t be charged Please try again!
+                            No worries, your won&apos;t be charged. Please try again!
                         </p>
                         <Link href="/courses" className={buttonVariants({
                             className: 'w-full mt-5',
