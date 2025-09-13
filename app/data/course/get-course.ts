@@ -1,7 +1,10 @@
+import 'server-only'
+
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
+import { cache } from 'react';
 
-export async function getIndividualCourse(slug: string) {
+export const getIndividualCourse = cache(async (slug: string) => {
     const course = await prisma.course.findUnique({
         where: {
             slug: slug
@@ -42,4 +45,4 @@ export async function getIndividualCourse(slug: string) {
     }
 
     return course;
-}
+})
