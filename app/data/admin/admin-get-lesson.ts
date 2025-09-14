@@ -18,7 +18,25 @@ export async function adminGetLesson(id: string) {
         return notFound();
     }
 
-    return lesson;
+    const previous = await prisma.lesson.findFirst({
+        where: {
+            position: lesson.position - 1
+        }
+    })
+
+    const next = await prisma.lesson.findFirst({
+        where: {
+            position: lesson.position + 1
+        }
+    })
+
+    
+
+    return {
+        lesson,
+        previous,
+        next
+    };
 }
 
 export type AdminLessonType = Awaited<ReturnType<typeof adminGetLesson>>

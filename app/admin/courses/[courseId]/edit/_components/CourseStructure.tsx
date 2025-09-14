@@ -8,7 +8,7 @@ import {CSS} from '@dnd-kit/utilities';
 import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, FileText, GripVertical, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -65,6 +65,10 @@ export function CourseStructure({ data }: iAppProps) {
             return updatedItems;
         })
     }, [data])
+
+    useEffect(() => {
+        toast.info("Click on each lesson to modify it's contents!")
+    }, [])
 
     function SortableItem({ children, id, className, data }: SortableItemProps) {
         const {
@@ -334,7 +338,7 @@ export function CourseStructure({ data }: iAppProps) {
                                                                             <FileText className="size-4" />
                                                                             <Link 
                                                                               href={`/admin/courses/${data.id}/${item.id}/${lesson.id}`}
-                                                                              className="pl-2"
+                                                                              className="pl-2 hover:text-primary"
                                                                             >
                                                                                 {lesson.title}
                                                                             </Link>

@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { lessonSchema, LessonSchemaType } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -26,23 +26,24 @@ interface iAppProps {
 
 export default function LessonForm({ data, chapterId, courseId}: iAppProps) {
     const [pending, startTransition] = useTransition();
+    const { lesson, next, previous } = data;
 
     const form = useForm<LessonSchemaType>({
         resolver: zodResolver(lessonSchema),
         defaultValues: {
-            name: data.title,
+            name: lesson.title,
             chapterId: chapterId,
             courseId: courseId,
-            description: data.description ?? undefined,
-            videoKey: data.videoKey ?? undefined,
-            thumbnailKey: data.thumbnailKey ?? undefined
+            description: lesson.description ?? undefined,
+            videoKey: lesson.videoKey ?? undefined,
+            thumbnailKey: lesson.thumbnailKey ?? undefined
         }
     })
 
    function onSubmit(values: LessonSchemaType) {
         // console.log(values)
         startTransition(async() => {
-            const { data: result, error } = await tryCatch(updateLesson(values, data.id));
+            const { data: result, error } = await tryCatch(updateLesson(values, lesson.id));
 
             if (error) {
                 toast.error("An unexpected error occurred. Please try again")
@@ -135,13 +136,38 @@ export default function LessonForm({ data, chapterId, courseId}: iAppProps) {
                                 )}
                             />
 
-                            <Button type="submit" disabled={pending}>
-                                {pending ? (
-                                    "Saving..."
-                                ) : (
-                                    "Save Lesson"
-                                )}
-                            </Button>
+                            <div className="flex items-center mt-12">
+                                <div className="flex-1">
+                                    {previous && (
+                                        <Link 
+                                            className={buttonVariants({ variant: 'secondary' })}
+                                            href={`/admin/courses/${courseId}/${chapterId}/${previous.id}`}
+                                        >
+                                            <ArrowLeft className="size-4" />
+                                            {previous.title}
+                                        </Link>
+                                    )}
+                                </div>
+
+                                <div className="flex-shrink-0 mx-4">
+                                    <Button type="submit" disabled={pending}>
+                                    {pending ? "Saving..." : "Save Lesson"}
+                                    </Button>
+                                </div>
+
+                                <div className="flex-1 flex justify-end">
+                                    {next && (
+                                        <Link 
+                                            className={buttonVariants({ variant: 'secondary' })}
+                                            href={`/admin/courses/${courseId}/${chapterId}/${next.id}`}
+                                        >
+                                            {next.title}
+                                            <ArrowRight className="size-4" />
+                                        </Link>
+                                    )}
+                                </div>
+                                </div>
+
                         </form>
                     </Form>
                 </CardContent>
