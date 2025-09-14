@@ -33,11 +33,19 @@ export function CourseContent({ data }: iAppProps) {
         return (
             <div className="aspect-video bg-black rounded-lg relative overflow-hidden">
                 <video 
-                    src={videoUrl} 
                     className="w-full h-full object-cover"
                     controls
+                    controlsList="nodownload noremoteplaybook"
+                    disablePictureInPicture 
                     poster={thumbnailUrl}
-                 />
+                >
+                    <source src={videoUrl} type="video/mp4" />
+                    <source src={videoUrl} type="video/webm" />
+                    <source src={videoUrl} type="video/ogg" />
+                    <source src={videoUrl} type="video/mkv" />
+
+                    Your browser does not support the video format.
+                </video>
             </div>
         )
     }
@@ -48,14 +56,16 @@ export function CourseContent({ data }: iAppProps) {
                 thumbnailKey={data.thumbnailKey ?? ""}
              />
             <div className="py-4 border-b">
-                <Button>
+                <Button variant='outline'>
                     <CheckCircle className="size-4 mr-2 text-green-500" />
                     Mark as Complete
                 </Button>
             </div>
 
-            <div>
-                <h1>{data.title}</h1>
+            <div className="space-y-3 pt-3">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                    {data.title}
+                </h1>
                 {data.description && (
                     <RenderDescription json={JSON.parse(data.description)} />
                 )}

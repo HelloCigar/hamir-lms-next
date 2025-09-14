@@ -10,11 +10,12 @@ interface iAppProps {
         position: number,
         description: string | null
     },
-    slug: string
+    slug: string,
+    isActive?: boolean
 }
 
-export function LessonItem({ lesson, slug }: iAppProps) {
-    const completed = true;
+export function LessonItem({ lesson, slug, isActive }: iAppProps) {
+    const completed = false;
 
     return (
         <Link 
@@ -23,7 +24,8 @@ export function LessonItem({ lesson, slug }: iAppProps) {
                 variant: completed ? 'secondary' : "outline",
                 className: cn(
                     "w-full p-2.5 h-auto justify-start transition-all",
-                    completed && 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-800 dark:text-green-200' 
+                    completed && 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-800 dark:text-green-200',
+                    isActive && !completed && 'bg-primary/10 dark:bg-primary/20 border-primary/50 hover:bg-primary/20 dark:hover:bg-primary/30 text-primary' 
                 )
             })}
         >
@@ -36,10 +38,13 @@ export function LessonItem({ lesson, slug }: iAppProps) {
                         </div>
                     ) : (
                         <div className={cn(
-                        "size-5 rounded-full border-2 bg-background flex justify-center items-center"
+                        "size-5 rounded-full border-2 bg-background flex justify-center items-center",
+                        isActive ? "border-primary bg-primary/10 dark:bg-primary/20": 
+                        "border-muted-foreground/60"
                     )}>
                         <Play className={cn(
-                            "size-2.5 fill-current"
+                            "size-2.5 fill-current",
+                            isActive? "text-primary": "text-muted-foreground"
                         )} />
                     </div>
                     )
@@ -49,7 +54,8 @@ export function LessonItem({ lesson, slug }: iAppProps) {
                 <div className="flex-1 text-left min-w-0">
                     <p className={cn(
                         "text-xs font-medium truncate",
-                        completed && 'text-green-800 dark:text-green-200'
+                        completed ? 'text-green-800 dark:text-green-200':
+                        isActive ? "text-primary font-semibold": "text-foreground"
                     )}>
                         {lesson.position}. {lesson.title}
                     </p>
@@ -58,6 +64,8 @@ export function LessonItem({ lesson, slug }: iAppProps) {
                             Completed
                         </p>
                     )}
+
+                    {isActive && !completed && <p className="text-[10px] text-primary font-medium">Currently Watching</p>}
                 </div>
             </div>
         </Link>
