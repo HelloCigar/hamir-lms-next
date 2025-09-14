@@ -9,11 +9,13 @@ import { authClient } from "@/lib/auth-client";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { IconBrandGoogle } from "@tabler/icons-react";
 
 export default function LoginForm() {
     const router = useRouter()
 
     const [githubPending, startGithubTransition] = useTransition();
+    const [googlePending, startGoogleTransition] = useTransition();
     const [emailPending, startEmailTransition] = useTransition();
     const [email, setEmail] = useState("");
 
@@ -25,7 +27,24 @@ export default function LoginForm() {
                 callbackURL: "/",
                 fetchOptions: {
                     onSuccess: () => {
-                        toast.success("Signed in with Github, you will be redirected...")
+                        toast.success("Signing in with Github, you will be redirected...")
+                    },
+                    onError: () => {
+                        toast.error("Internal server error")
+                    }
+                }
+            })
+        })
+    }
+
+    async function signInWithGoogle() {
+        startGoogleTransition(async () => {
+            await authClient.signIn.social({
+                provider: 'google',
+                callbackURL: "/",
+                fetchOptions: {
+                    onSuccess: () => {
+                        toast.success("Signing in with Google, you will be redirected...")
                     },
                     onError: () => {
                         toast.error("Internal server error")
@@ -54,12 +73,12 @@ export default function LoginForm() {
     }
 
     return <Card>
-            <CardHeader>
+            <CardHeader className="text-center">
                 <CardTitle className="text-xl">
                     Welcome back!
                 </CardTitle>
                 <CardDescription>
-                    Login with your Github or Email Account
+                    Login with your Google or Github Account
                 </CardDescription>
             </CardHeader>
 
@@ -79,6 +98,24 @@ export default function LoginForm() {
                         <>
                             <GithubIcon className="size-4"/>
                             Sign in with Github
+                        </>
+                        )
+                    }
+                </Button>
+                <Button 
+                    onClick={signInWithGoogle} 
+                    className="w-full" 
+                    variant="outline"
+                >
+                    {googlePending ? (
+                        <>
+                            <Loader className="size-4 animate-spin" />
+                            <span>Loading...</span>
+                        </>
+                        ) : (
+                        <>
+                            <IconBrandGoogle className="size-4"/>
+                            Sign in with Google
                         </>
                         )
                     }

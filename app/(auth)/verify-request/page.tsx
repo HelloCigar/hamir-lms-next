@@ -6,10 +6,10 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { authClient } from "@/lib/auth-client";
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState, useTransition, Suspense } from "react";
 import { toast } from "sonner";
 
-export default function VerifyRequest() {
+function VerifyRequestContent() {
     const router = useRouter();
     const [otp, setOtp] = useState("");
     const [emailPending, startEmailTransition] = useTransition();
@@ -77,5 +77,36 @@ export default function VerifyRequest() {
                 </Button>
             </CardContent>
         </Card>
+    )
+}
+
+function LoadingFallback() {
+    return (
+        <Card className="w-full mx-auto">
+            <CardHeader className="text-center">
+                <CardTitle className="text-xl">Please check your email inbox</CardTitle>
+                <CardDescription>
+                    Loading...
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <div className="flex flex-col items-center space-y-2">
+                    <div className="h-12 w-64 bg-gray-200 rounded animate-pulse"></div>
+                    <p className="text-sm text-muted-foreground">Loading verification form...</p>
+                </div>
+                <Button disabled className="w-full">
+                    <Loader2 className="size-4 animate-spin" />
+                    <span>Loading...</span>
+                </Button>
+            </CardContent>
+        </Card>
+    )
+}
+
+export default function VerifyRequest() {
+    return (
+        <Suspense fallback={<LoadingFallback />}>
+            <VerifyRequestContent />
+        </Suspense>
     )
 }
