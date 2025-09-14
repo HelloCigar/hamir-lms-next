@@ -2,6 +2,9 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+
 
 interface featureProps {
   title: string,
@@ -36,7 +39,11 @@ const features: featureProps[] = [
   }
 ]
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth.api.getSession({
+      headers: await headers()
+  });
+
   return (
     <>
     <section className="relative py-20">
@@ -58,7 +65,8 @@ export default function Home() {
             >
             Explore courses
           </Link>
-          <Link 
+          {!session && (
+            <Link 
             className={buttonVariants({
               size: "lg",
               variant: 'outline'
@@ -67,6 +75,7 @@ export default function Home() {
             >
             Sign In
           </Link>
+          )}
         </div>
       </div>
     </section>

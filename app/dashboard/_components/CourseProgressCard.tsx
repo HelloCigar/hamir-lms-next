@@ -65,7 +65,7 @@ export function CourseProgressCard({data}: iAppProps) {
                         className: 'w-full mt-4'
                     })}
                 >
-                    Learn More
+                    Watch Course
                 </Link>
             </CardContent>
         </Card>
