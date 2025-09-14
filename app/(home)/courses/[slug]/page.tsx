@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getIndividualCourse } from "./get-course";
+import { getIndividualCourse } from "../../../data/course/get-course";
 import { env } from "@/lib/env";
 import { Badge } from "@/components/ui/badge";
 import { IconBook, IconCategory, IconChartBar, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
