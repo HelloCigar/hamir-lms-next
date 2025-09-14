@@ -5,7 +5,7 @@ import { RenderDescription } from "@/components/rich-text-editor/RenderDescripti
 import { Button } from "@/components/ui/button";
 import { tryCatch } from "@/hooks/try-catch";
 import { useConstructUrl } from "@/hooks/use-construct-url";
-import { BookIcon, CheckCircle } from "lucide-react";
+import { BookIcon, CheckCircle, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { MarkLessonComplete } from "../actions";
 import { toast } from "sonner";
@@ -63,7 +63,11 @@ export function CourseContent({ data }: iAppProps) {
                         onClick={onSubmit}
                         disabled={pending}
                     >
-                        <CheckCircle className="size-4 mr-2 text-green-500" />
+                        {pending ? (
+                            <Loader2 className="animate-spin size-4 mr-2 text-green-500" />
+                        ) : (
+                            <CheckCircle className="size-4 mr-2 text-green-500" />
+                        )}
                         Mark as Complete
                     </Button>
                 )}

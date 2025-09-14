@@ -11,11 +11,11 @@ interface iAppProps {
         description: string | null
     },
     slug: string,
-    isActive?: boolean
+    isActive?: boolean,
+    completed: boolean
 }
 
-export function LessonItem({ lesson, slug, isActive }: iAppProps) {
-    const completed = false;
+export function LessonItem({ lesson, slug, isActive, completed }: iAppProps) {
 
     return (
         <Link 
