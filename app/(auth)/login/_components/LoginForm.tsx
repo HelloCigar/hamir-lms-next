@@ -24,7 +24,7 @@ export default function LoginForm() {
         startGithubTransition(async () => {
             await authClient.signIn.social({
                 provider: 'github',
-                callbackURL: "/",
+                callbackURL: "/dashboard",
                 fetchOptions: {
                     onSuccess: () => {
                         toast.success("Signing in with Github, you will be redirected...")
@@ -41,7 +41,7 @@ export default function LoginForm() {
         startGoogleTransition(async () => {
             await authClient.signIn.social({
                 provider: 'google',
-                callbackURL: "/",
+                callbackURL: "/dashboard",
                 fetchOptions: {
                     onSuccess: () => {
                         toast.success("Signing in with Google, you will be redirected...")
@@ -67,7 +67,7 @@ export default function LoginForm() {
                     onError: () => {
                         toast.error("Error sending email")
                     }
-                }
+                },
             })
         })
     }
