@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DndContext, DragEndEvent, DraggableSyntheticListeners, KeyboardSensor, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useRef } from "react";
 import {CSS} from '@dnd-kit/utilities';
 import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
 import { cn } from "@/lib/utils";
@@ -33,21 +33,28 @@ interface SortableItemProps {
 }
 
 export function CourseStructure({ data }: iAppProps) {
+    const isDraggingRef = useRef(false);
+    
     const initialItems = data.chapters.map(chapter => ({
         id: chapter.id,
         title: chapter.title,
         order: chapter.position,
         isOpen: true, //default open
-        lessons: chapter.lessons.map((lesson) => ({
-            id: lesson.id,
-            title: lesson.title,
-            order: lesson.position
-        }))
+        lessons: chapter.lessons
+            .sort((a, b) => a.position - b.position)
+            .map((lesson) => ({
+                id: lesson.id,
+                title: lesson.title,
+                order: lesson.position
+            }))
     })) || [];
 
     const [items, setItems] = useState(initialItems);
 
     useEffect(() => {
+        // Don't update state if we're currently dragging
+        if (isDraggingRef.current) return;
+        
         setItems((prevItems) => {
             const updatedItems = data.chapters.map((chapter) => ({
                 id: chapter.id,
@@ -55,11 +62,13 @@ export function CourseStructure({ data }: iAppProps) {
                 order: chapter.position,
                 isOpen: 
                    prevItems.find((item) => item.id === chapter.id)?.isOpen ?? true,
-                lessons: chapter.lessons.map((lesson) => ({
-                    id: lesson.id,
-                    title: lesson.title,
-                    order: lesson.position
-                }))
+                lessons: chapter.lessons
+                    .sort((a, b) => a.position - b.position) // Ensure lessons are sorted
+                    .map((lesson) => ({
+                        id: lesson.id,
+                        title: lesson.title,
+                        order: lesson.position
+                    }))
             })) || []
 
             return updatedItems;
@@ -100,7 +109,13 @@ export function CourseStructure({ data }: iAppProps) {
         );
     }
 
+    function handleDragStart() {
+        isDraggingRef.current = true;
+    }
+
     function handleDragEnd(event: DragEndEvent) {
+        isDraggingRef.current = false;
+        
         const { active, over } = event;
         
         if (!over || active.id === over.id) {
@@ -133,7 +148,6 @@ export function CourseStructure({ data }: iAppProps) {
 
             if(oldIndex === -1 || newIndex === -1) {
                 toast.error("Could not find chapter old/new index for reordering");
-
                 return;
             }
 
@@ -264,6 +278,7 @@ export function CourseStructure({ data }: iAppProps) {
     return (
         <DndContext 
             collisionDetection={rectIntersection} 
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             sensors={sensors}
         >
