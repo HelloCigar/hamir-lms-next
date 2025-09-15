@@ -1,6 +1,6 @@
 # Hamir LMS
 
-This was built because I want to learn NextJs. Credits to this 24-hour [tutorial](https://youtu.be/xqoYkX4hfwg?si=h1qvz1GIaDNCPg99), I think I got the gist of how the framework works now. Not a 1 to 1 copy
+This was built because I want to learn NextJs. Credits to this 24-hour [tutorial](https://youtu.be/xqoYkX4hfwg?si=h1qvz1GIaDNCPg99), I think I got the gist of how the framework works now. Not a 1 to 1 copy, I added google oauth and used my own gmail instead of the third party service in the tutorial.
 
 ## Screenshots
 
