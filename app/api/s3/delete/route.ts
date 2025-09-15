@@ -1,33 +1,31 @@
 import { requireAdmin } from "@/app/data/admin/require-admin";
-import arcjet, { fixedWindow } from "@/lib/arcjet";
+// import arcjet, { fixedWindow } from "@/lib/arcjet";
 import { env } from "@/lib/env";
 import { S3 } from "@/lib/S3Client";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
-const aj = arcjet
-.withRule(
-    fixedWindow({
-        mode: 'LIVE',
-        window: "1m",
-        max: 5,
-    })
-)
+// const aj = arcjet
+// .withRule(
+//     fixedWindow({
+//         mode: 'LIVE',
+//         window: "1m",
+//         max: 5,
+//     })
+// )
 
 export async function DELETE(request: Request) {
     const session = await requireAdmin();
 
     try {
-        const decision = await aj.protect(request, {
-            fingerprint: session?.user.id as string
-        });
+        // const decision = await aj.protect(request);
 
-        if (decision.isDenied()) {
-            return NextResponse.json(
-                { error: "Suspicious request detected" },
-                { status: 429 }
-            )
-        }
+        // if (decision.isDenied()) {
+        //     return NextResponse.json(
+        //         { error: "Suspicious request detected" },
+        //         { status: 429 }
+        //     )
+        // }
         const body = await request.json();
 
         const key = body.key;
