@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import { Footer7 } from "@/components/footer7";
 
 
 interface featureProps {
@@ -46,7 +47,7 @@ export default async function Home() {
 
   return (
     <>
-    <section className="relative py-20">
+    <section className="relative pt-20">
       <div className="flex flex-col items-center text-center space-y-8">
         <Badge variant="outline">
           The Future of Online Education
@@ -80,7 +81,7 @@ export default async function Home() {
       </div>
     </section>
 
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-2">
+    <section className="pt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-2">
       {features.map((feature, index) => (
         <Card key={index} className="hover:shadow-lg transition-shadow">
           <CardHeader>
@@ -93,6 +94,8 @@ export default async function Home() {
         </Card>
       ))}
     </section>
+
+    <Footer7 />
     </>
   );
 }
