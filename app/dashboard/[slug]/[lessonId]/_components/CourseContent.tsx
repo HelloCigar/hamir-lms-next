@@ -21,7 +21,8 @@ export function CourseContent({ data }: iAppProps) {
 
     
     function onSubmit() {
-        // console.log(values)
+        const toastId = toast.loading("Loading...");
+
         startTransition(async() => {
             const { data: result, error } = await tryCatch(
                 MarkLessonComplete(data.id, data.Chapter.Course.slug)
@@ -33,10 +34,14 @@ export function CourseContent({ data }: iAppProps) {
             }
 
             if (result.status === 'success') {
-                toast.success(result.message)
+                toast.success(result.message, {
+                    id: toastId
+                })
                 triggerConfetti();
             } else if (result.status === "error") {
-                toast.success(result.message)
+                toast.success(result.message, {
+                    id: toastId
+                })
             }
         }) 
     }
