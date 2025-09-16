@@ -16,6 +16,12 @@ This was built because I want to learn NextJs. Credits to this 24-hour [tutorial
 - drag and drop!
   ![alt text](screenshots/image-4.png)
 
+- Rich-text editor!
+  ![alt text](screenshots/image-5.png)
+
+- Dark Mode!
+  ![alt text](screenshots/image-6.png)
+
 ## Technologies
 
 - [NextJS](nextjs.org)
