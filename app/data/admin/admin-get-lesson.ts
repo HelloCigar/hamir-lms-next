@@ -32,11 +32,6 @@ export async function adminGetLesson(id: string) {
         }
     })
 
-    console.log(next)
-    console.log(previous)
-
-    
-
     return {
         lesson,
         previous,
