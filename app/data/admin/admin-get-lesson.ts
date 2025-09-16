@@ -20,15 +20,20 @@ export async function adminGetLesson(id: string) {
 
     const previous = await prisma.lesson.findFirst({
         where: {
-            position: lesson.position - 1
+            position: lesson.position - 1,
+            chapterId: lesson.chapterId
         }
     })
 
     const next = await prisma.lesson.findFirst({
         where: {
-            position: lesson.position + 1
+            position: lesson.position + 1,
+            chapterId: lesson.chapterId
         }
     })
+
+    console.log(next)
+    console.log(previous)
 
     
 
