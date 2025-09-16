@@ -51,6 +51,8 @@ export function Uploader({ value, onChange, fileTypeAccepted }: iAppProps) {
             }))
 
             try {
+                const sanitizedFileName = file.name.replace(/\s+/g, "-").toLowerCase();
+
                 //1. Get presigned URL
                 const presignedResponse = await fetch('/api/s3/upload', {
                     method: "POST",
@@ -58,7 +60,7 @@ export function Uploader({ value, onChange, fileTypeAccepted }: iAppProps) {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        fileName: file.name,
+                        fileName: sanitizedFileName,
                         contentType: file.type,
                         size: file.size,
                         isImage: 
