@@ -17,6 +17,7 @@ import { NewLessonModal } from "./NewLessonModal";
 import { DeleteChapter } from "./DeleteChapter";
 import { NewChapterModal } from "./NewChapterModal";
 import { DeleteLesson } from "./DeleteLesson";
+import { ChapterItem } from "./ChapterItem";
 
 interface iAppProps {
     data: AdminCourseSingularType
@@ -278,14 +279,12 @@ export function CourseStructure({ data }: iAppProps) {
     return (
         <DndContext 
             collisionDetection={rectIntersection} 
-            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             sensors={sensors}
         >
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between border-b border-border">
                     <CardTitle>Chapters</CardTitle>
-                    <NewChapterModal courseId={data.id} />
                 </CardHeader>
                 <CardContent className="space-y-8">
                      <SortableContext 
@@ -293,86 +292,12 @@ export function CourseStructure({ data }: iAppProps) {
                         items={items}
                         >
                         {items.map((item) => (
-                            <SortableItem 
+                            <ChapterItem 
                                 key={item.id}
-                                id={item.id}
-                                data={{type: 'chapter'}}
-                            >
-                                {(listeners) => (
-                                    <Card>
-                                        <Collapsible 
-                                            open={item.isOpen} 
-                                            onOpenChange={() => toggleChapter(item.id)}
-                                        >
-                                            <div className="flex items-center justify-between p-2 border-b border-border">
-                                                <div className="flex items-center gap-2">
-                                                    <Button 
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        {...listeners}
-                                                    >
-                                                        <GripVertical className="size-4" />
-                                                    </Button>
-                                                    <CollapsibleTrigger asChild>
-                                                        <Button
-                                                            size="icon"
-                                                            variant="ghost"
-                                                        >
-                                                            {item.isOpen ? (
-                                                              <ChevronDown className="size-4" />
-                                                            ) : (
-                                                              <ChevronRight className="size-4" />
-                                                            )}
-                                                        </Button>
-                                                    </CollapsibleTrigger>
-                                                    <p className="cursor-pointer hover:text-primary pl-2">{item.title}</p>
-                                                </div>
-                                                <DeleteChapter chapterId={item.id} courseId={data.id} />
-                                            </div>
-                                            <CollapsibleContent>
-                                                <div className="p-1">
-                                                    <SortableContext 
-                                                        items={item.lessons.map((lesson) => lesson.id)}
-                                                        strategy={verticalListSortingStrategy}
-
-                                                    >
-                                                        {item.lessons.map((lesson) => (
-                                                            <SortableItem
-                                                                key={lesson.id}
-                                                                id={lesson.id}
-                                                                data={{type: 'lesson', chapterId: item.id}}
-                                                            >
-                                                                {(lessonListeners) => (
-                                                                    <div className="flex items-center justify-between p-1 hover:bg-accent rounded-sm">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <Button variant="ghost" size="icon"
-                                                                            {...lessonListeners}
-                                                                            >
-                                                                                <GripVertical className="size-4" />
-                                                                            </Button>
-                                                                            <FileText className="size-4" />
-                                                                            <Link 
-                                                                              href={`/admin/courses/${data.id}/${item.id}/${lesson.id}`}
-                                                                              className="pl-2 hover:text-primary"
-                                                                            >
-                                                                                {lesson.title}
-                                                                            </Link>
-                                                                        </div> 
-                                                                        <DeleteLesson chapterId={item.id} courseId={data.id} lessonId={lesson.id} />
-                                                                    </div>
-                                                                )}
-                                                            </SortableItem>
-                                                        ))}
-                                                    </SortableContext>
-                                                    <div className="p-2">
-                                                        <NewLessonModal chapterId={item.id} courseId={data.id} />
-                                                    </div>
-                                                </div>
-                                            </CollapsibleContent> 
-                                        </Collapsible>
-                                    </Card>
-                                )}
-                            </SortableItem>
+                                item={item}
+                                courseId={data.id}
+                                onToggleChapter={toggleChapter}
+                            />
                         ))}
                      </SortableContext>
                 </CardContent>
