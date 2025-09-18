@@ -1,37 +1,18 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DndContext, DragEndEvent, DraggableSyntheticListeners, KeyboardSensor, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { ReactNode, useEffect, useState, useRef } from "react";
-import {CSS} from '@dnd-kit/utilities';
+import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useEffect, useState, useRef } from "react";
 import { AdminCourseSingularType } from "@/app/data/admin/admin-get-course";
-import { cn } from "@/lib/utils";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, FileText, GripVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
-import { NewLessonModal } from "./NewLessonModal";
-import { DeleteChapter } from "./DeleteChapter";
-import { NewChapterModal } from "./NewChapterModal";
-import { DeleteLesson } from "./DeleteLesson";
 import { ChapterItem } from "./ChapterItem";
 
 interface iAppProps {
     data: AdminCourseSingularType
 }
 
-interface SortableItemProps {
-    id: string;
-    children: (listeners: DraggableSyntheticListeners) => ReactNode;
-    className?: string;
-    data?: {
-        type: 'chapter' | 'lesson'
-        chapterId?: string; //only relevant for lessons
-    }
-}
 
 export function CourseStructure({ data }: iAppProps) {
     const isDraggingRef = useRef(false);
@@ -79,40 +60,6 @@ export function CourseStructure({ data }: iAppProps) {
     useEffect(() => {
         toast.info("Click on each lesson to modify it's contents!")
     }, [])
-
-    function SortableItem({ children, id, className, data }: SortableItemProps) {
-        const {
-            attributes,
-            listeners,
-            setNodeRef,
-            transform,
-            transition,
-            isDragging
-        } = useSortable({id: id, data: data});
-
-        const style = {
-            transform: CSS.Transform.toString(transform),
-            transition,
-        };
-
-        return (
-            <div 
-                ref={setNodeRef} 
-                style={style} 
-                {...attributes}
-                className={cn(
-                    "touch-none", className,
-                    isDragging ? "z-10" : ""
-                )}
-            >
-                {children(listeners)}
-            </div>
-        );
-    }
-
-    function handleDragStart() {
-        isDraggingRef.current = true;
-    }
 
     function handleDragEnd(event: DragEndEvent) {
         isDraggingRef.current = false;
